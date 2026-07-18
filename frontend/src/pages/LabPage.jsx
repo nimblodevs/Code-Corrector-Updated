@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { FlaskConical, Dna } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -381,7 +382,7 @@ export default function LabPage(props) {
               </div>
               <div style={{ fontSize:14,fontWeight:700,color:"#0b1929",marginBottom:12 }}>Lab Worklist</div>
               {pendingPatients.length===0
-                ? <EmptyState icon="🧪" msg="No pending lab requests." />
+                ? <EmptyState icon={FlaskConical} msg="No pending lab requests." />
                 : pendingPatients.map(p=>{
                   const sm=STATUS_META[p.status]||STATUS_META.Queued;
                   const ab=countAbnormal(p);
@@ -528,7 +529,7 @@ export default function LabPage(props) {
                       specimenGroups[key].tests.push(requestedTestNames[tid]||tid);
                     });
                     const groups=Object.values(specimenGroups);
-                    if(!groups.length) return <EmptyState icon="🧬" msg="No specimen mapping found for the ordered tests." />;
+                    if(!groups.length) return <EmptyState icon={Dna} msg="No specimen mapping found for the ordered tests." />;
                     const dateCode=new Date().toISOString().slice(2,10).replace(/-/g,"");
                     const qSeq=(labActive.queueNo||"Q000").replace(/\D/g,"").padStart(3,"0");
                     return (

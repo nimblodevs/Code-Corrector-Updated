@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 function SchemesPage({ initialProviderId, onNavigateBack }) {
   return (
-    <div style={{ padding:"40px", fontFamily:"'Palatino Linotype',Palatino,serif" }}>
+    <div className="p-10 font-sans">
       <div style={{ maxWidth:900, margin:"0 auto" }}>
         <button onClick={onNavigateBack}
           style={{ padding:"8px 18px", background:"#fff", border:"1.5px solid #e2e8f0", borderRadius:9, cursor:"pointer", fontFamily:"inherit", fontSize:13, color:"#475569", marginBottom:24 }}>

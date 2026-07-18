@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Stethoscope, CheckCircle } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -206,7 +207,7 @@ export default function TriagePage(props) {
             <div style={{ maxWidth:860 }}>
               <div style={{ fontSize:14,fontWeight:700,color:"#0b1929",marginBottom:12 }}>Patients Awaiting Triage</div>
               {waiting.length===0
-                ? <EmptyState icon="[OK]" msg="No patients currently awaiting triage." />
+                ? <EmptyState icon={CheckCircle} msg="No patients currently awaiting triage." />
                 : waiting.map(p=>(
                   <div key={p.queueNo} onClick={()=>goTriage(p)}
                     style={{ background:"#fff",borderRadius:11,padding:"14px 18px",marginBottom:10,
@@ -221,7 +222,9 @@ export default function TriagePage(props) {
                         <div style={{ fontSize:11,color:C.slateL,fontFamily:"monospace" }}>Arrived {p.queueTime} . {p.phone}</div>
                       </div>
                     </div>
-                    <button style={{ ...BtnRed,padding:"8px 18px",fontSize:12 }}>🩺 Triage Now</button>
+                    <button style={{ ...BtnRed,padding:"8px 18px",fontSize:12,display:"flex",alignItems:"center",gap:6 }}>
+                      <Stethoscope size={14} /> Triage Now
+                    </button>
                   </div>
                 ))
               }

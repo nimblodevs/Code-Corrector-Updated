@@ -58,7 +58,7 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --font-sans: 'Geist Variable', sans-serif;
+  --font-sans: 'Outfit', sans-serif;
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
 
@@ -146,7 +146,7 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
 
-  --app-font-sans: 'Inter', sans-serif;
+  --app-font-sans: 'Outfit', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
   --radius: 0.625rem; /* 8px */

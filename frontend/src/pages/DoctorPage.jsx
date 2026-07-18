@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Stethoscope, FlaskConical, AlertTriangle, AlertCircle } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -134,7 +135,7 @@ export default function DoctorPage(props) {
               </div>
               <div style={{ fontSize:14,fontWeight:700,color:"#0b1929",marginBottom:12 }}>Patients Awaiting Doctor</div>
               {waiting.length===0
-                ? <EmptyState icon="🩺" msg="No patients currently waiting to see a doctor." />
+                ? <EmptyState icon={Stethoscope} msg="No patients currently waiting to see a doctor." />
                 : waiting.map(p=>{
                   const tl=TRIAGE_LEVELS.find(t=>t.level===p.triage?.level);
                   return (
@@ -155,15 +156,15 @@ export default function DoctorPage(props) {
                           {p.triage && <div style={{ fontSize:11,color:"#c2410c",marginTop:2 }}>"{p.triage.chiefComplaint}"</div>}
                           {p.clerking?.labResults && (
                             <div style={{ marginTop:4,display:"flex",gap:6,flexWrap:"wrap" }}>
-                              <span style={{ background:"#cffafe",color:"#0e7490",borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700 }}>
-                                🧪 Lab results available
+                              <span style={{ background:"#cffafe",color:"#0e7490",borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700,display:"inline-flex",alignItems:"center",gap:4 }}>
+                                <FlaskConical size={12} /> Lab results available
                               </span>
                               {(() => {
                                 let crit=0,abnorm=0;
                                 Object.values(p.clerking.labResults).forEach(r=>{ if(r.flag==="critical")crit++; else if(r.flag?.startsWith("abnormal"))abnorm++; });
                                 return (<>
-                                  {crit>0 && <span style={{ background:"#fee2e2",color:"#991b1b",borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700 }}>🔴 {crit} critical</span>}
-                                  {abnorm>0 && <span style={{ background:"#fef3c7",color:"#92400e",borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700 }}>(!) {abnorm} abnormal</span>}
+                                  {crit>0 && <span style={{ background:"#fee2e2",color:"#991b1b",borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700,display:"inline-flex",alignItems:"center",gap:4 }}><AlertCircle size={12} className="text-red-600" /> {crit} critical</span>}
+                                  {abnorm>0 && <span style={{ background:"#fef3c7",color:"#92400e",borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700,display:"inline-flex",alignItems:"center",gap:4 }}><AlertTriangle size={12} className="text-amber-600" /> {abnorm} abnormal</span>}
                                 </>);
                               })()}
                             </div>
@@ -173,8 +174,9 @@ export default function DoctorPage(props) {
                       <div style={{ display:"flex",alignItems:"center",gap:10 }}>
                         {tl && <Badge label={`L${p.triage.level} ${tl.label}`} color={tl.tc} bg={tl.bg} sm />}
                         <button style={{ ...BtnPrimary,padding:"8px 18px",fontSize:12,
-                          background:p.clerking?.labResults?"#0e7490":"#7e22ce" }}>
-                          {p.clerking?.labResults ? "🧪 Review Results" : "🩺 See Patient"}
+                          background:p.clerking?.labResults?"#0e7490":"#7e22ce",display:"inline-flex",alignItems:"center",gap:6 }}>
+                          {p.clerking?.labResults ? <FlaskConical size={14} /> : <Stethoscope size={14} />}
+                          {p.clerking?.labResults ? "Review Results" : "See Patient"}
                         </button>
                       </div>
                     </div>

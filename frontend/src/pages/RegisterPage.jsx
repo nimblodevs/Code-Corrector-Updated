@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { ClipboardList } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS, TITLES, EDUCATION_LEVELS, EMPLOYMENT_STATUSES, COPAY_CATEGORIES, COUNTIES } from "../data/constants";
@@ -134,7 +135,7 @@ export default function RegisterPage(props) {
               </div>
               <div style={{ fontSize:14,fontWeight:700,color:"#0b1929",marginBottom:12 }}>Patients Awaiting Registration</div>
               {waiting.length===0
-                ? <EmptyState icon="📝" msg="No patients currently awaiting registration." />
+                ? <EmptyState icon={ClipboardList} msg="No patients currently awaiting registration." />
                 : waiting.map(p=>{
                   const tl = TRIAGE_LEVELS.find(t=>t.level===p.triage?.level);
                   return (

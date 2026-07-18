@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Pill, Printer } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -269,8 +270,8 @@ export default function PharmacyPage(props) {
                               </span>
                             );
                           })()}
-                          <button onClick={()=>openRx(p)} style={{ padding:"8px 18px",border:"none",borderRadius:8,cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:700,color:"#fff",background:"#059669" }}>💊 Dispense</button>
-                          <button onClick={()=>printRx(p)} style={{ ...BtnGhost,padding:"6px 14px",fontSize:11 }}>🖨️ Print Rx</button>
+                          <button onClick={()=>openRx(p)} style={{ padding:"8px 18px",border:"none",borderRadius:8,cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:700,color:"#fff",background:"#059669",display:"inline-flex",alignItems:"center",gap:6 }}><Pill size={14} /> Dispense</button>
+                          <button onClick={()=>printRx(p)} style={{ ...BtnGhost,padding:"6px 14px",fontSize:11,display:"inline-flex",alignItems:"center",gap:4 }}><Printer size={12} /> Print Rx</button>
                         </div>
                       </div>
                       <div style={{ marginTop:10,paddingTop:10,borderTop:"1px solid #f1f5f9",display:"flex",gap:6,flexWrap:"wrap" }}>
@@ -302,7 +303,7 @@ export default function PharmacyPage(props) {
                 })}
               </>)}
 
-              {rxPatients.length === 0 && <EmptyState icon="💊" msg="No prescriptions yet. Prescriptions appear here once a doctor saves a clerking with drugs ordered." />}
+              {rxPatients.length === 0 && <EmptyState icon={Pill} msg="No prescriptions yet. Prescriptions appear here once a doctor saves a clerking with drugs ordered." />}
             </div>
           )}
 

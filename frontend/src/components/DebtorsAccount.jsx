@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 function DebtorsAccount({ onNavigate }) {
   return (
-    <div style={{ padding:"40px", fontFamily:"'Palatino Linotype',Palatino,serif" }}>
+    <div className="p-10 font-sans">
       <div style={{ maxWidth:900, margin:"0 auto" }}>
         <div style={{ fontSize:28, fontWeight:800, color:"#0b1929", marginBottom:8 }}>Debtors Account</div>
         <div style={{ fontSize:14, color:"#64748b", marginBottom:32 }}>Track outstanding balances for Insurance and Corporate accounts</div>

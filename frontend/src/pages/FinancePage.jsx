@@ -68,7 +68,7 @@ export default function FinancePage(props) {
 
 
     return (
-      <div style={{ display:"flex",minHeight:"100vh",fontFamily:"'Palatino Linotype',Palatino,serif" }}>
+      <div className="flex min-h-screen font-sans bg-background text-foreground selection:bg-cyan-500/30">
         <Sidebar page={page} setPage={setPage} patients={patients} />
         <div style={{ flex:1,minWidth:0,overflow:"auto" }}>
           <DebtorsAccount

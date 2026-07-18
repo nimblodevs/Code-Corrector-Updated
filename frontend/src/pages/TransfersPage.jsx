@@ -48,6 +48,7 @@ export default function TransfersPage(props) {
     supSearch, setSupSearch, supEditId, setSupEditId,
     poDetailPO, setPoDetailPO, analyticsSupId, setAnalyticsSupId,
     histSearch, setHistSearch, histPatient, setHistPatient, histTab, setHistTab, histFilter, setHistFilter,
+    transfers, setTransfers,
     tfSearch, setTfSearch, tfModal, setTfModal, tfForm, setTfForm, tfErr, setTfErr, tfDetail, setTfDetail,
     expiryTab, setExpiryTab, expirySearch, setExpirySearch, expiryCat, setExpiryCat,
     disposals, setDisposals, dispModal, setDispModal, dispForm, setDispForm, dispErr, setDispErr,

@@ -820,10 +820,18 @@ function RefNumStrip({ p }) {
 }
 
 // --- Empty select state --------------------------------------------------------
-function EmptyState({ icon, msg, btn, onBtn }) {
+function EmptyState({ icon: Icon, msg, btn, onBtn }) {
   return (
     <div style={{ display:"flex",flexDirection:"column",alignItems:"center",gap:14,marginTop:64 }}>
-      <div style={{ fontSize:56,lineHeight:1 }}>{icon}</div>
+      {Icon && (
+        <div style={{ lineHeight:1 }} className="flex justify-center items-center">
+          {typeof Icon === "string" ? (
+            <span style={{ fontSize:56 }}>{Icon}</span>
+          ) : (
+            <Icon size={56} className="text-slate-400 stroke-[1.2]" />
+          )}
+        </div>
+      )}
       <div style={{ fontSize:15,color:C.slate,fontWeight:600,textAlign:"center",maxWidth:360 }}>{msg}</div>
       {onBtn && <button onClick={onBtn} style={{ padding:"10px 22px",border:"none",borderRadius:9,background:"#0b1929",color:"#fff",cursor:"pointer",fontSize:13,fontWeight:700,fontFamily:"inherit" }}>{btn}</button>}
     </div>

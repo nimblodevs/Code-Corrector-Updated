@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Hospital, Clipboard, FileText } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -237,7 +238,7 @@ export default function WardPage(props) {
               <div>
                 <div style={{ fontSize:13,fontWeight:700,color:"#0b1929",marginBottom:10 }}>Current Inpatients ({admitted.length})</div>
                 {admitted.length===0
-                  ? <EmptyState icon="🏥" msg="No patients currently admitted." />
+                  ? <EmptyState icon={Hospital} msg="No patients currently admitted." />
                   : admitted.map(p=>{
                     const tl=TRIAGE_LEVELS.find(t=>t.level===p.triage?.level);
                     const w=WARDS.find(x=>x.name===p.admission?.ward);
@@ -597,7 +598,7 @@ export default function WardPage(props) {
                 <div>
                   <div style={{ fontSize:13,fontWeight:700,color:"#0b1929",marginBottom:10 }}>Ward Round History ({ipOrders.length})</div>
                   {ipOrders.length===0
-                    ? <EmptyState icon="📋" msg="No ward round entries yet." />
+                    ? <EmptyState icon={Clipboard} msg="No ward round entries yet." />
                     : [...ipOrders].reverse().map((o,i)=>(
                       <div key={o.id} style={{ background:"#fff",borderRadius:10,padding:"14px 16px",marginBottom:10,boxShadow:"0 1px 6px rgba(0,0,0,.06)",border:"1.5px solid #e2e8f0" }}>
                         <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8 }}>
@@ -939,7 +940,7 @@ export default function WardPage(props) {
                   <button onClick={()=>printTreatmentSheet(wardActive)} style={{ ...BtnGhost,padding:"8px 16px",fontSize:12 }}>Print Treatment Sheet</button>
                 </div>
                 {ipOrders.length===0
-                  ? <EmptyState icon="📄" msg="No ward round entries. Add them from the Ward Round tab." />
+                  ? <EmptyState icon={FileText} msg="No ward round entries. Add them from the Ward Round tab." />
                   : (
                     <div style={{ background:"#fff",borderRadius:12,overflow:"hidden",boxShadow:"0 1px 8px rgba(0,0,0,.07)" }}>
                       <table style={{ width:"100%",borderCollapse:"collapse" }}>

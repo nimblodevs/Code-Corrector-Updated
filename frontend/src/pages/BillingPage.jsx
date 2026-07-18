@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { CreditCard } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -177,7 +178,7 @@ export default function BillingPage(props) {
               </div>
               <div style={{ fontSize:14,fontWeight:700,color:"#0b1929",marginBottom:12 }}>Patients Awaiting Billing</div>
               {waiting.length===0
-                ? <EmptyState icon="💳" msg="No patients currently awaiting billing." />
+                ? <EmptyState icon={CreditCard} msg="No patients currently awaiting billing." />
                 : waiting.map(p=>{
                   const cc = p.category==="Insurance"?{bg:"#dbeafe",c:"#1d4ed8"}:p.category==="Corporate"?{bg:"#dcfce7",c:"#15803d"}:{bg:"#fef9c4",c:"#b45309"};
                   const hasOrders = p.clerking?.orders;
@@ -200,7 +201,9 @@ export default function BillingPage(props) {
                       </div>
                       <div style={{ display:"flex",alignItems:"center",gap:10 }}>
                         <span style={{ background:cc.bg,color:cc.c,borderRadius:6,padding:"3px 9px",fontSize:11,fontWeight:700 }}>{p.category}</span>
-                        <button style={{ ...BtnPrimary,padding:"8px 18px",fontSize:12,background:"#1d4ed8" }}>💳 Bill Now</button>
+                        <button style={{ ...BtnPrimary,padding:"8px 18px",fontSize:12,background:"#1d4ed8",display:"inline-flex",alignItems:"center",gap:6 }}>
+                          <CreditCard size={14} /> Bill Now
+                        </button>
                       </div>
                     </div>
                   );

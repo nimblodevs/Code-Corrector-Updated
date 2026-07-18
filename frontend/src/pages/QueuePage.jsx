@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Users, Ticket, Stethoscope, UserPlus, CreditCard, CheckCircle, Search } from "lucide-react";
 import { C, baseInput, IS, SS, TA, Badge, Sec, FL, Card, ErrBox, SuccessBox, FlowBar, Sidebar, TopBar, Layout, PatientBanner, RefNumStrip, EmptyState, CatalogueSearch } from "../components/SharedComponents";
 import { STATUS_META, ICON_EMOJI, emojiOf, genNo, CASH_METHODS, SCHEME_METHODS, checkPharmCleared, todayStr, timeNow, pad, calcAge, fmtN, avatarHue } from "../lib/utils";
 import { EMPTY_REG, SPECIALTIES, WARDS, GENDERS, BLOOD_GROUPS, RELIGIONS, DIET_OPTIONS, MARITAL, LANGUAGES, CORP_ORGS, INS_PROVIDERS, DISCHARGE_TYPES, CONDITION_AT_DC, SPECIMEN_MAP, NATIONALITIES, RELATIONSHIPS, TRIAGE_LEVELS } from "../data/constants";
@@ -76,19 +77,21 @@ export default function QueuePage(props) {
         {/* Stats */}
         <div style={{ display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:11,marginBottom:20 }}>
           {[
-            ["All","👥","#0b1929","#e2e8f0",""],
-            ["Queued","🎫","#475569","#f1f5f9","Queued"],
-            ["Triaged","🩺","#c2410c","#ffedd5","Triaged"],
-            ["Registered","📝","#b45309","#fef9c4","Registered"],
-            ["Billed","💳","#1d4ed8","#dbeafe","Billed"],
-            ["Completed","[OK]","#15803d","#dcfce7","Completed"],
-          ].map(([s,icon,col,bg,f])=>(
+            ["All", Users, "#0b1929", "#e2e8f0", ""],
+            ["Queued", Ticket, "#475569", "#f1f5f9", "Queued"],
+            ["Triaged", Stethoscope, "#c2410c", "#ffedd5", "Triaged"],
+            ["Registered", UserPlus, "#b45309", "#fef9c4", "Registered"],
+            ["Billed", CreditCard, "#1d4ed8", "#dbeafe", "Billed"],
+            ["Completed", CheckCircle, "#15803d", "#dcfce7", "Completed"],
+          ].map(([s,IconComp,col,bg,f])=>(
             <div key={s} onClick={()=>setFStatus(s)}
               style={{ background:"#fff",borderRadius:11,padding:"11px 13px",
                 boxShadow:"0 1px 8px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:10,
                 cursor:"pointer",border:fStatus===s?`2px solid ${col}`:"2px solid transparent",transition:"all .15s" }}>
               <div style={{ width:36,height:36,background:bg,borderRadius:9,flexShrink:0,
-                display:"flex",alignItems:"center",justifyContent:"center",fontSize:17 }}>{icon}</div>
+                display:"flex",alignItems:"center",justifyContent:"center",color:col }}>
+                <IconComp size={18} className="stroke-[2]" />
+              </div>
               <div>
                 <div style={{ fontSize:22,fontWeight:800,color:col,lineHeight:1 }}>
                   {f ? patients.filter(p=>p.status===f).length : patients.length}
@@ -102,8 +105,8 @@ export default function QueuePage(props) {
         {/* Search + filters */}
         <div style={{ background:"#fff",borderRadius:11,padding:"11px 14px",marginBottom:14,
           display:"flex",gap:10,alignItems:"center",boxShadow:"0 1px 6px rgba(0,0,0,.05)" }}>
-          <div style={{ flex:1,position:"relative" }}>
-            <span style={{ position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",color:"#cbd5e1" }}>🔍</span>
+          <div style={{ flex:1,position:"relative",display:"flex",alignItems:"center" }}>
+            <Search size={16} className="absolute left-3 text-slate-400 pointer-events-none" />
             <input value={search} onChange={e=>setSearch(e.target.value)}
               placeholder="Search name, patient ID, queue no., phone..."
               style={{ width:"100%",padding:"8px 11px 8px 34px",border:"1.5px solid #e2e8f0",
