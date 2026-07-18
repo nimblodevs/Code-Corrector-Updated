@@ -1,0 +1,21 @@
+{
+  "name": "medicore-hms",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend",
+    "start": "npm run serve --workspace=frontend",
+    "lint": "npm run lint --workspace=backend",
+    "format": "prettier --write \"frontend/src/**/*.{js,jsx}\" \"backend/src/**/*.js\"",
+    "format:check": "prettier --check \"frontend/src/**/*.{js,jsx}\" \"backend/src/**/*.js\""
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  }
+}
