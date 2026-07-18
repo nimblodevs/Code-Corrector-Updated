@@ -1,6 +1,50 @@
 import { useState, useEffect, useRef } from "react";
 import { LAB_CATEGORIES, RAD_CATEGORIES, DRUG_ITEMS, searchRegistry, FLOW_STEPS, TRIAGE_LEVELS } from "../data/referenceData";
 import { STATUS_META, NAV, emojiOf, calcAge, avatarHue, fmtN, pad, genNo } from "../lib/utils";
+import { Button } from "./ui/button";
+import { Badge as ShadcnBadge } from "./ui/badge";
+import {
+  ClipboardList,
+  Stethoscope,
+  UserPlus,
+  Heart,
+  FlaskConical,
+  Pill,
+  Bed,
+  Folder,
+  BarChart3,
+  FileText,
+  CreditCard,
+  Layers,
+  Package,
+  ShoppingCart,
+  BookOpen,
+  TrendingUp,
+  RefreshCw,
+  AlertTriangle
+} from "lucide-react";
+
+const LUCIDE_ICONS = {
+  queue: ClipboardList,
+  triage: Stethoscope,
+  register: UserPlus,
+  doctor: Heart,
+  lab: FlaskConical,
+  pharmacy: Pill,
+  ward: Bed,
+  history: Folder,
+  analytics: BarChart3,
+  reports: FileText,
+  finance: CreditCard,
+  schemes: Layers,
+  inventory: Package,
+  procurement: ShoppingCart,
+  catalogue: BookOpen,
+  forecast: TrendingUp,
+  transfers: RefreshCw,
+  expiry: AlertTriangle,
+};
+
 
 // --- Theme Management System ---
 let currentTheme = localStorage.getItem("medicore_theme") || "light";
@@ -309,25 +353,47 @@ function Sidebar({ page, setPage, patients, collapsed, setCollapsed }) {
   const NavItem = ({ n, i }) => {
     const active = page === n.key;
     const cnt    = badgeCounts[n.badge] || 0;
+    const IconComponent = LUCIDE_ICONS[n.key];
     return (
-      <button onClick={()=>setPage(n.key)}
-        style={{ display:"flex",alignItems:"center",gap:9,padding:"8px 10px",borderRadius:9,
-          border:"none",cursor:"pointer",fontFamily:"inherit",width:"100%",textAlign:"left",
-          background:active?"rgba(0,188,212,.18)":"transparent",
-          color:active?"#00e5ff":"rgba(255,255,255,.6)",
-          borderLeft:active?"3px solid #00bcd4":"3px solid transparent",
-          transition:"all .15s", marginBottom:1 }}
-        onMouseEnter={e=>{ if(!active){e.currentTarget.style.background="rgba(255,255,255,.06)";e.currentTarget.style.color="rgba(255,255,255,.85)";} }}
-        onMouseLeave={e=>{ if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color="rgba(255,255,255,.6)";} }}>
-        <span style={{ fontSize:15,width:20,flexShrink:0,textAlign:"center" }}>{emojiOf(n.emoji)}</span>
-        <div style={{ flex:1,minWidth:0 }}>
-          <div style={{ fontSize:12,fontWeight:active?700:500,lineHeight:1.2 }}>{n.label}</div>
-          <div style={{ fontSize:9,color:"rgba(255,255,255,.28)",marginTop:1,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{n.desc}</div>
+      <Button
+        variant="ghost"
+        onClick={() => setPage(n.key)}
+        className={`w-full justify-start text-left px-3 py-2 h-auto gap-3 rounded-lg mb-0.5 border-l-3 transition-all outline-none group/btn ${
+          active
+            ? "bg-cyan-500/15 text-cyan-400 border-cyan-400 font-semibold"
+            : "text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-100"
+        }`}
+        id={`nav-item-${n.key}`}
+      >
+        {IconComponent ? (
+          <IconComponent
+            size={16}
+            className={`shrink-0 transition-transform group-hover/btn:scale-105 ${
+              active ? "text-cyan-400 opacity-100" : "text-slate-400 opacity-70 group-hover/btn:opacity-100"
+            }`}
+          />
+        ) : (
+          <span className="text-[15px] w-5 shrink-0 text-center">{emojiOf(n.emoji)}</span>
+        )}
+        <div className="flex-1 min-w-0">
+          <div className={`text-[12px] leading-tight ${active ? "font-bold" : "font-medium"}`}>
+            {n.label}
+          </div>
+          <div className="text-[9px] text-slate-500 mt-0.5 leading-none overflow-hidden text-ellipsis whitespace-nowrap">
+            {n.desc}
+          </div>
         </div>
-        {cnt>0 &&
-          <span style={{ background:active?C.cyan:"rgba(255,255,255,.15)",color:"#fff",
-            borderRadius:20,padding:"1px 6px",fontSize:10,fontWeight:700,flexShrink:0 }}>{cnt}</span>}
-      </button>
+        {cnt > 0 && (
+          <ShadcnBadge
+            variant={active ? "default" : "secondary"}
+            className={`px-1.5 py-0 h-4 min-w-4 text-[9px] font-bold rounded-full ${
+              active ? "bg-cyan-500 text-slate-950" : "bg-white/10 text-white"
+            }`}
+          >
+            {cnt}
+          </ShadcnBadge>
+        )}
+      </Button>
     );
   };
 
@@ -337,57 +403,44 @@ function Sidebar({ page, setPage, patients, collapsed, setCollapsed }) {
   );
 
   return (
-    <div style={{ width: collapsed ? 0 : 220, flexShrink:0,
-      background:`linear-gradient(180deg,${C.navy} 0%,${C.navyM} 60%,#0a1f38 100%)`,
-      display: collapsed ? "none" : "flex",flexDirection:"column",boxShadow:"4px 0 28px rgba(0,0,0,.45)",
-      position:"sticky",top:0,height:"100vh",overflow:"hidden" }}>
+    <div
+      id="main-sidebar"
+      className={`shrink-0 flex flex-col h-screen sticky top-0 overflow-hidden transition-all duration-300 ${
+        collapsed ? "w-0 hidden" : "w-[220px] flex"
+      }`}
+      style={{
+        background: `linear-gradient(180deg, ${C.navy} 0%, ${C.navyM} 60%, #0a1f38 100%)`,
+        boxShadow: "4px 0 28px rgba(0, 0, 0, 0.45)",
+      }}
+    >
 
       {/* Logo */}
-      <div style={{ padding:"16px 16px 13px",borderBottom:"1px solid rgba(255,255,255,.07)",flexShrink:0 }}>
-        <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:10 }}>
-          <div style={{ display:"flex",alignItems:"center",gap:10 }}>
-            <div style={{ width:36,height:36,borderRadius:10,flexShrink:0,
-              background:"linear-gradient(135deg,#00bcd4,#0097a7)",
-              display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,
-              boxShadow:"0 4px 14px rgba(0,188,212,.4)" }}>🏥</div>
+      <div className="p-4 border-b border-white/5 shrink-0">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl shrink-0 bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-lg shadow-md shadow-cyan-500/20">
+              🏥
+            </div>
             <div>
-              <div style={{ color:"#fff",fontWeight:800,fontSize:15,letterSpacing:.3 }}>MediCore</div>
-              <div style={{ color:"rgba(255,255,255,.3)",fontSize:8,letterSpacing:2.5,textTransform:"uppercase",fontFamily:"monospace" }}>HMS · v3.0</div>
+              <div className="text-white font-extrabold text-[15px] tracking-tight leading-tight">MediCore</div>
+              <div className="text-white/30 text-[8px] tracking-[0.2em] uppercase font-mono mt-0.5 leading-none">HMS · v3.0</div>
             </div>
           </div>
-          <button onClick={() => setCollapsed(true)}
-            style={{
-              background: "rgba(255,255,255,0.08)",
-              border: "none",
-              color: "rgba(255,255,255,0.6)",
-              cursor: "pointer",
-              borderRadius: "6px",
-              width: "28px",
-              height: "28px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "14px",
-              transition: "all 0.15s",
-              outline: "none"
-            }}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(true)}
+            className="h-7 w-7 rounded-md bg-white/5 text-slate-400 hover:bg-white/15 hover:text-white shrink-0"
             title="Collapse Sidebar"
-            onMouseEnter={e => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.15)";
-              e.currentTarget.style.color = "#fff";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.color = "rgba(255,255,255,0.6)";
-            }}>
+            id="btn-collapse-sidebar"
+          >
             ✕
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Scrollable nav — all sections */}
-      <nav style={{ flex:1,overflowY:"auto",overflowX:"hidden",padding:"6px 8px 8px",
-        scrollbarWidth:"thin",scrollbarColor:"rgba(255,255,255,.12) transparent" }}>
+      <nav className="flex-1 overflow-y-auto px-2 py-3 medicore-nav">
         <style>{`
           .medicore-nav::-webkit-scrollbar{width:4px}
           .medicore-nav::-webkit-scrollbar-track{background:transparent}
@@ -407,13 +460,20 @@ function Sidebar({ page, setPage, patients, collapsed, setCollapsed }) {
       </nav>
 
       {/* Footer */}
-      <div style={{ padding:"10px 14px 14px",borderTop:"1px solid rgba(255,255,255,.07)",flexShrink:0 }}>
-        <div style={{ display:"flex",alignItems:"center",gap:9 }}>
-          <div style={{ width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#00bcd4,#0097a7)",
-            display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,flexShrink:0 }}>🩺</div>
-          <div style={{ minWidth:0 }}>
-            <div style={{ color:"rgba(255,255,255,.85)",fontSize:11,fontWeight:600 }}>Admin User</div>
-            <div style={{ color:"rgba(255,255,255,.28)",fontSize:9,fontFamily:"monospace" }}>{new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}</div>
+      <div className="p-3.5 border-t border-white/5 shrink-0" id="sidebar-footer">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center text-[13px] shrink-0 shadow-md">
+            🩺
+          </div>
+          <div className="min-w-0">
+            <div className="text-slate-200 text-[11px] font-semibold leading-tight">Admin User</div>
+            <div className="text-slate-500 text-[9px] font-mono leading-none mt-0.5">
+              {new Date().toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -438,44 +498,30 @@ function TopBar({ title, subtitle, sub, action }) {
   const displaySubtitle = subtitle || sub;
 
   return (
-    <div style={{ background:"hsl(var(--card))",borderBottom:"1.5px solid hsl(var(--border))",padding:"13px 26px",
-      display:"flex",alignItems:"center",justifyContent:"space-between",
-      position:"sticky",top:0,zIndex:10,boxShadow:"0 1px 0 hsl(var(--border))" }}>
+    <div
+      id="main-topbar"
+      className="bg-card border-b border-border py-3 px-6 flex items-center justify-between sticky top-0 z-10 shadow-sm"
+    >
       <div>
-        <div style={{ fontSize:18,fontWeight:800,color:"hsl(var(--foreground))",letterSpacing:.2 }}>{title}</div>
-        {displaySubtitle && <div style={{ fontSize:11,color:"hsl(var(--muted-foreground))",fontFamily:"monospace",marginTop:1 }}>{displaySubtitle}</div>}
+        <div className="text-[17px] font-extrabold text-foreground tracking-tight">{title}</div>
+        {displaySubtitle && (
+          <div className="text-[11px] text-muted-foreground font-mono mt-0.5">
+            {displaySubtitle}
+          </div>
+        )}
       </div>
-      <div style={{ display:"flex",alignItems:"center",gap:12 }}>
-        <button
+      <div className="flex items-center gap-3">
+        <Button
+          variant="outline"
+          size="sm"
           onClick={toggleTheme}
-          style={{
-            background: "hsl(var(--muted))",
-            border: "1.5px solid hsl(var(--border))",
-            borderRadius: "9px",
-            padding: "8px 14px",
-            fontSize: "13px",
-            fontWeight: "700",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            color: "hsl(var(--foreground))",
-            fontFamily: "inherit",
-            transition: "all 0.15s ease",
-            outline: "none"
-          }}
+          className="font-semibold text-xs border border-border bg-muted hover:bg-accent hover:text-foreground text-foreground flex items-center gap-1.5 transition-all outline-none"
           title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = "hsl(var(--accent))";
-            e.currentTarget.style.borderColor = "hsl(var(--ring))";
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = "hsl(var(--muted))";
-            e.currentTarget.style.borderColor = "hsl(var(--border))";
-          }}
+          id="theme-toggle-btn"
         >
-          {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-        </button>
+          <span>{theme === "dark" ? "☀️" : "🌙"}</span>
+          <span>{theme === "dark" ? "Light" : "Dark"}</span>
+        </Button>
         {action}
       </div>
     </div>
@@ -563,134 +609,81 @@ function Layout({ page, setPage, patients, children, overlay }) {
   };
 
   return (
-    <div style={{ display:"flex",minHeight:"100vh",fontFamily:"'Palatino Linotype',Palatino,serif" }}>
-      <Sidebar page={page} setPage={setPage} patients={patients} collapsed={collapsed} setCollapsed={handleToggle} />
-      <div style={{ flex:1,display:"flex",flexDirection:"column",background:C.bg,minWidth:0,overflow:"auto", position: "relative" }}>
+    <div
+      id="main-layout-container"
+      className="flex min-h-screen font-sans bg-background text-foreground selection:bg-cyan-500/30 select-none"
+    >
+      <Sidebar
+        page={page}
+        setPage={setPage}
+        patients={patients}
+        collapsed={collapsed}
+        setCollapsed={handleToggle}
+      />
+      <div className="flex-1 flex flex-col bg-background min-w-0 overflow-auto relative">
         {collapsed && (
-          <button onClick={() => handleToggle(false)} style={{
-            position: "fixed",
-            left: 0,
-            top: "14px",
-            zIndex: 100,
-            width: "36px",
-            height: "36px",
-            borderRadius: "0 8px 8px 0",
-            background: "#0b1929",
-            color: "#00e5ff",
-            border: "1.5px solid #00bcd4",
-            borderLeft: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "2px 2px 10px rgba(0,0,0,0.25)",
-            cursor: "pointer",
-            fontSize: "16px",
-            transition: "all 0.15s"
-          }}
-          title="Expand Sidebar"
-          onMouseEnter={e => {
-            e.currentTarget.style.background = "#0d2744";
-            e.currentTarget.style.width = "40px";
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = "#0b1929";
-            e.currentTarget.style.width = "36px";
-          }}>
+          <Button
+            onClick={() => handleToggle(false)}
+            className="fixed left-0 top-[14px] z-50 w-9 h-9 rounded-r-lg rounded-l-none bg-[#0b1929] text-[#00e5ff] border border-[#00bcd4] border-l-0 hover:bg-[#0d2744] hover:w-10 shadow-lg cursor-pointer flex items-center justify-center text-lg transition-all outline-none"
+            title="Expand Sidebar"
+            id="btn-expand-sidebar"
+          >
             ☰
-          </button>
+          </Button>
         )}
         {children}
       </div>
       {overlay}
 
       {/* Mini Toasts Notification Container */}
-      <div style={{
-        position: "fixed",
-        bottom: "24px",
-        right: "24px",
-        zIndex: 99999,
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        maxWidth: "360px",
-        width: "calc(100% - 48px)",
-        pointerEvents: "none"
-      }}>
-        {miniToasts.map(t => {
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5 max-w-[360px] w-[calc(100%-48px)] pointer-events-none">
+        {miniToasts.map((t) => {
           const isCopy = t.type === "copy";
           const icon = isCopy ? "📋" : "✓";
-          const borderCol = isCopy ? "hsl(var(--ring))" : "hsl(var(--primary))";
-          const bgCol = "hsl(var(--card))";
+          const borderClass = isCopy ? "border-cyan-500" : "border-emerald-500";
+          const textAccent = isCopy ? "text-cyan-400" : "text-emerald-500";
+          const textHeader = isCopy ? "Copied" : "Success";
           return (
             <div
               key={t.id}
+              className={`pointer-events-auto bg-card border ${borderClass} rounded-xl p-3 shadow-xl flex items-center justify-between gap-3 backdrop-blur-md relative overflow-hidden transition-all duration-300`}
               style={{
-                pointerEvents: "auto",
-                background: bgCol,
-                border: `1.5px solid ${borderCol}`,
-                borderRadius: "12px",
-                padding: "12px 16px",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "12px",
                 animation: "toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                color: "hsl(var(--foreground))",
-                backdropFilter: "blur(8px)",
-                position: "relative",
-                overflow: "hidden"
               }}
+              id={`toast-${t.id}`}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{
-                  width: "24px",
-                  height: "24px",
-                  borderRadius: "50%",
-                  background: isCopy ? "rgba(0, 229, 255, 0.12)" : "rgba(5, 150, 105, 0.12)",
-                  color: isCopy ? "#00bcd4" : "#059669",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "12px",
-                  fontWeight: "bold",
-                  flexShrink: 0
-                }}>
+              <div className="flex items-center gap-2.5">
+                <span
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                    isCopy ? "bg-cyan-500/10 text-cyan-400" : "bg-emerald-500/10 text-emerald-500"
+                  }`}
+                >
                   {icon}
                 </span>
                 <div>
-                  <div style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", color: isCopy ? "#00bcd4" : "#059669" }}>
-                    {isCopy ? "Copied" : "Success"}
+                  <div className={`text-[10px] font-bold uppercase tracking-wider ${textAccent}`}>
+                    {textHeader}
                   </div>
-                  <div style={{ fontSize: "13px", fontWeight: "500", marginTop: "2px", wordBreak: "break-word" }}>{t.message}</div>
+                  <div className="text-xs font-medium text-foreground mt-0.5 word-break-all">
+                    {t.message}
+                  </div>
                 </div>
               </div>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => handleCloseToast(t.id)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "hsl(var(--muted-foreground))",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  padding: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "4px"
-                }}
+                className="h-6 w-6 text-muted-foreground hover:text-foreground shrink-0 rounded-md"
+                id={`toast-close-${t.id}`}
               >
                 ✕
-              </button>
-              <div style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                height: "3px",
-                background: isCopy ? "#00bcd4" : "#059669",
-                width: "100%",
-                animation: "toastProgress 4s linear forwards"
-              }} />
+              </Button>
+              <div
+                className={`absolute bottom-0 left-0 h-0.5 w-full ${isCopy ? "bg-cyan-400" : "bg-emerald-500"}`}
+                style={{
+                  animation: "toastProgress 4s linear forwards",
+                }}
+              />
             </div>
           );
         })}

@@ -1,17 +1,15 @@
-import { Route, Switch } from "wouter";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HMS from "./HMS";
 import RegistrationForm from "./pages/RegistrationForm";
 
 function App() {
   return (
-    <Switch>
-      <Route path="/registration">
-        <RegistrationForm />
-      </Route>
-      <Route>
-        <HMS />
-      </Route>
-    </Switch>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/registration" element={<RegistrationForm />} />
+        <Route path="*" element={<HMS />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
